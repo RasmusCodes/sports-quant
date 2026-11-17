@@ -7,7 +7,8 @@ __pycache__/
 
 # Downloaded data (raw API responses, tidy tables, SQLite odds database): rebuilt by the commands in README.md.
 # Not committed because of size and because it would republish the exchanges' price data.
-data/
+# Anchored to the repository root: the code package sq/data/ must stay tracked.
+/data/
 
 # Row-level outputs, rebuilt from the data; the dashboard embeds per-game exchange prices
 *.parquet
