@@ -1,0 +1,17 @@
+# Environments and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.claude/
+
+# Downloaded data (raw API responses, tidy tables, SQLite odds database): rebuilt by the commands in README.md.
+# Not committed because of size and because it would republish the exchanges' price data.
+data/
+
+# Row-level outputs, rebuilt from the data; the dashboard embeds per-game exchange prices
+*.parquet
+dashboard/index.html
+
+# Run logs (contain local paths)
+outputs/logs/

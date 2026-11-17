@@ -1,0 +1,101 @@
+{
+  "available": true,
+  "markets_collected": 16487,
+  "matched_players_share": 0.9815612300600474,
+  "n_scored": 16041,
+  "games": 728,
+  "players": 297,
+  "seasons": [
+    2026,
+    2027
+  ],
+  "dates": [
+    "2026-01-16",
+    "2026-11-11"
+  ],
+  "dispersion": 3.3946010544120617,
+  "mean_spread": 0.043955489059285584,
+  "yes_rate": 0.42447478336762046,
+  "mean_price": 0.4111673212393242,
+  "calibration_market": {
+    "intercept": 0.061471183090540206,
+    "intercept_se": 0.019131994840662008,
+    "slope": 0.9520405713595131,
+    "slope_se": 0.016917015376711256,
+    "slope_p_vs_1": 0.004582831389295083
+  },
+  "encompassing": {
+    "b_const": 0.07080184414177687,
+    "b_market": 0.8391346924289743,
+    "b_model": 0.13236646156778345,
+    "se_const": 0.026561550300202446,
+    "se_market": 0.03880131953046253,
+    "se_model": 0.0400790786914524,
+    "p_const": 0.007685644452241101,
+    "p_market": 1.0129002984420157e-103,
+    "p_model": 0.0009578187855191092,
+    "p_model_one_sided": 0.0004789093927595546
+  },
+  "paired_model_minus_market": {
+    "mean_diff": 0.021186979962968408,
+    "ci_lo": 0.0165095998587264,
+    "ci_hi": 0.026038252447043532,
+    "z": 8.690447962968435,
+    "p_value": 3.610131446825965e-18,
+    "n": 16041,
+    "clusters": 728
+  },
+  "yes_at_ask": {
+    "roi": -0.047642358864975434,
+    "roi_ci": [
+      -0.06909382230821962,
+      -0.02699293037376528
+    ],
+    "mean_gap_vs_mid": 0.013307462128296239,
+    "mean_half_spread": 0.021977744529642792
+  },
+  "strategy_h3": {
+    "n_bets": 8175,
+    "share_yes": 0.49394495412844036,
+    "mean_pred_edge": 0.08442576186532179,
+    "roi": -0.07359029337101725,
+    "roi_ci": [
+      -0.09990144828165431,
+      -0.044881980862634875
+    ],
+    "hit_rate": 0.3804281345565749
+  },
+  "dnp_share": 0.0046131787295056416,
+  "frozen_discovery_coefs": {
+    "b_const": 0.12687395826852374,
+    "b_market": 0.7768757141846799,
+    "b_model": 0.1962793180956549
+  },
+  "strategy_h3_combined": {
+    "n_bets": 1522,
+    "share_yes": 0.9586070959264126,
+    "mean_pred_edge": 0.03484467204259503,
+    "roi": -0.10549850603967055,
+    "roi_ci": [
+      -0.17023229029870485,
+      -0.034938387373726704
+    ],
+    "hit_rate": 0.3291721419185282
+  },
+  "paired_combined_minus_market": {
+    "mean_diff": -0.0008980279521039126,
+    "ci_lo": -0.0025741219784849944,
+    "ci_hi": 0.0006719902138487904,
+    "z": -1.0767232258410737,
+    "p_value": 0.2816039330109329,
+    "n": 16041,
+    "clusters": 728
+  },
+  "verdict": {
+    "H1_model_adds_information": true,
+    "H2_yes_at_ask_not_profitable": true,
+    "H3_combined_rule_profitable": false,
+    "H3b_model_only_rule_profitable": false
+  },
+  "overlap_with_discovery_games": 0
+}

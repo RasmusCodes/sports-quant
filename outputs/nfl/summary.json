@@ -1,0 +1,33 @@
+{
+  "longrun_n": 3686,
+  "flb_book": {
+    "slope": 1.0727969030573157,
+    "slope_se": 0.04954001523338161,
+    "intercept": -0.049941411846503296
+  },
+  "book_ml_n": 3685,
+  "book_ml_seasons": [
+    2013,
+    2026
+  ],
+  "book_overround_mean": 0.03046874763227883,
+  "spread_n": 3604,
+  "spread_cover_rate_home": 0.4900110987791343,
+  "spread_book_mean_p": 0.4999549043447114,
+  "spread_favourite_cover_rate": 0.48791330925257015,
+  "key_numbers": {
+    "actual_share_3": 0.13540510543840178,
+    "actual_share_7": 0.08296337402885683,
+    "sim_share_3": 0.10236571864594896,
+    "sim_share_7": 0.06691204217536072
+  },
+  "normal_share_3": 0.05238398543364158,
+  "margin_z_sd": 0.9676742331481024,
+  "total_n": 3663,
+  "total_over_rate": 0.49030849030849033,
+  "total_over_rate_wind15": 0.44569288389513106,
+  "total_book_p_over_wind15": 0.5007186842360938,
+  "total_n_wind15": 267,
+  "exchange_common_n": 328,
+  "kalshi_minus_book_mean_abs": 0.01104962319073281
+}

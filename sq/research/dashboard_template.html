@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odds Research Dashboard</title>
+<style>
+:root {
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --base:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --good:#006300; --bad:#d03b3b; --wash:rgba(42,120,214,0.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --base:#383835; --border:rgba(255,255,255,0.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+    --good:#0ca30c; --bad:#e66767; --wash:rgba(57,135,229,0.14);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --base:#383835; --border:rgba(255,255,255,0.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+  --good:#0ca30c; --bad:#e66767; --wash:rgba(57,135,229,0.14);
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--page); color:var(--ink); font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+.wrap { max-width:1240px; margin:0 auto; padding:24px 16px 48px; }
+header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+h1 { font-size:22px; margin:0 0 4px; font-weight:650; }
+.sub { color:var(--ink2); margin:0; max-width:760px; }
+.asof { color:var(--muted); font-size:12px; margin-top:6px; }
+button, select, input { font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 10px; }
+button { cursor:pointer; }
+.filters { display:flex; gap:12px; flex-wrap:wrap; align-items:end; margin:20px 0 16px; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+.filters label { display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--ink2); }
+.seg { display:inline-flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.seg button { border:0; border-radius:0; padding:6px 14px; background:var(--surface); }
+.seg button[aria-pressed="true"] { background:var(--ink); color:var(--surface); }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin-bottom:16px; }
+.tile { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; min-height:92px; }
+.tile .label { color:var(--ink2); font-size:12px; }
+.tile .value { font-size:24px; font-weight:600; margin-top:4px; }
+.tile .delta { font-size:12px; color:var(--ink2); margin-top:2px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:16px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 14px 10px; min-width:0; }
+.card h2 { font-size:14px; margin:0 0 2px; font-weight:600; }
+.card .note { color:var(--ink2); font-size:12px; margin:0 0 8px; }
+.legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--ink2); margin:4px 0 6px; }
+.legend span { display:inline-flex; align-items:center; gap:6px; }
+.legend i { width:14px; height:3px; border-radius:2px; display:inline-block; }
+svg { width:100%; height:auto; display:block; overflow:visible; }
+svg text { fill:var(--ink2); font-size:11px; font-family:inherit; }
+details { margin-top:6px; font-size:12px; color:var(--ink2); }
+#risk, details > div { overflow-x:auto; max-width:100%; }
+details table { margin-top:6px; }
+table { border-collapse:collapse; width:100%; font-size:12.5px; }
+th, td { text-align:right; padding:5px 8px; border-bottom:1px solid var(--grid); font-variant-numeric:tabular-nums; white-space:nowrap; }
+th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align:left; }
+th { color:var(--ink2); font-weight:600; cursor:pointer; user-select:none; position:sticky; top:0; background:var(--surface); }
+.tablewrap { max-height:520px; overflow:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); }
+.section-title { font-size:16px; font-weight:600; margin:28px 0 8px; }
+.tip { position:fixed; pointer-events:none; background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:12px; box-shadow:0 4px 14px rgba(0,0,0,0.12); display:none; z-index:10; max-width:260px; }
+.pos { color:var(--good); } .neg { color:var(--bad); }
+footer { margin-top:32px; color:var(--ink2); font-size:12.5px; max-width:900px; }
+footer h3 { font-size:13px; color:var(--ink); margin:16px 0 4px; }
+@media (max-width:520px) { .grid { grid-template-columns:1fr; } .tile .value { font-size:20px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Odds research dashboard</h1>
+    <p class="sub">Out-of-sample model probabilities against margin-free market probabilities, for studying market
+      efficiency. It does not recommend bets: every model here is less accurate than the closing price.</p>
+    <div class="asof" id="asof"></div>
+  </div>
+  <button id="theme" aria-label="Toggle colour theme">Theme</button>
+</header>
+
+<div class="filters" role="group" aria-label="Filters">
+  <label>League<span class="seg" id="league"><button data-v="nba" aria-pressed="true">NBA</button><button data-v="nfl" aria-pressed="false">NFL</button></span></label>
+  <label>Season<select id="season"></select></label>
+  <label>Market<select id="market"></select></label>
+  <label>Model<select id="model"></select></label>
+</div>
+
+<section class="tiles" id="tiles" aria-live="polite"></section>
+
+<section class="grid">
+  <div class="card"><h2>Calibration</h2><p class="note">Observed home-win rate by forecast decile; on the diagonal is perfectly calibrated.</p>
+    <div class="legend" id="cal-leg"></div><div id="cal"></div><details><summary>Data table</summary><div id="cal-t"></div></details></div>
+  <div class="card"><h2>Model minus market</h2><p class="note">Disagreement in home-win probability, percentage points; tails are folded into the end bins.</p>
+    <div id="diff"></div><details><summary>Data table</summary><div id="diff-t"></div></details></div>
+  <div class="card"><h2>Out-of-sample log loss by season</h2><p class="note">Lower is better. Hyperparameters fitted on earlier seasons only.</p>
+    <div class="legend" id="sea-leg"></div><div id="sea"></div><details><summary>Data table</summary><div id="sea-t"></div></details></div>
+  <div class="card"><h2>Bankroll, pre-registered strategies</h2><p class="note" id="bank-note"></p>
+    <div class="legend" id="bank-leg"></div><div id="bank"></div><details><summary>Data table</summary><div id="bank-t"></div></details></div>
+  <div class="card" id="clv-card"><h2>Closing-line value of placed bets</h2><p class="note">Closing fair probability minus price paid, per bet (Kalshi, T-6h, ensemble).</p>
+    <div id="clv"></div><details><summary>Data table</summary><div id="clv-t"></div></details></div>
+  <div class="card"><h2>Risk and bankroll metrics</h2><p class="note">Pre-registered configuration: quarter Kelly, 2-point minimum edge after fees, 2% per bet, 15% per day.</p><div id="risk"></div></div>
+</section>
+
+<div class="section-title" id="up-title">Upcoming games: model probabilities</div>
+<div class="tablewrap" id="upcoming"></div>
+
+<div class="section-title">Games</div>
+<div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap"><input id="q" placeholder="Filter by team, e.g. BOS" aria-label="Filter games by team"><span class="asof" id="count"></span></div>
+<div class="tablewrap" id="games"></div>
+
+<footer>
+  <h3>How to read this</h3>
+  <p>Market probabilities have the margin removed: Kalshi uses the mid of both team books, Polymarket its single book,
+  and sportsbook moneylines are devigged with Shin's method. Model probabilities are produced strictly before each game
+  (ratings use results of earlier days only; injury reports only if published before the decision time). Log loss and
+  calibration, not betting returns, are the yardstick. The strategy results are a stress test of that yardstick under
+  fees and executable prices. Closing-line value (CLV) is the less noisy measure of edge.</p>
+  <h3>Sources</h3>
+  <p>NBA box scores and official injury reports: sportsdataverse (MIT). NFL games and closing lines: nflverse (CC-BY-4.0).
+  Exchange prices: Kalshi and Polymarket public market-data APIs. Built by <code>scripts/build_dashboard.py</code>.</p>
+</footer>
+</div>
+<div class="tip" id="tip" role="status"></div>
+<script>
+const D = __DATA__;
+const $ = (s) => document.querySelector(s);
+const st = { league: "nba", season: "all", market: null, model: null };
+const MARKETS = {
+  nba: [["k", "Kalshi close"], ["pm", "Polymarket close"], ["k6", "Kalshi T-6h"], ["ko", "Kalshi open"], ["pmo", "Polymarket open"]],
+  nfl: [["book", "Sportsbook close (Shin)"], ["k", "Kalshi close"], ["pm", "Polymarket close"], ["ko", "Kalshi open"]],
+};
+const MODELS = {
+  nba: [["ens", "Ensemble (close info)"], ["ens_e", "Ensemble (T-6h info)"], ["bayes", "Bayesian state-space"], ["elo", "Elo (538 params)"]],
+  nfl: [["ens", "Ensemble"], ["bayes", "Bayesian state-space"], ["elo", "Elo (538 params)"]],
+};
+const fmtP = (x, d = 1) => (x == null ? "-" : (100 * x).toFixed(d) + "%");
+const fmt = (x, d = 3) => (x == null || !isFinite(x) ? "-" : x.toFixed(d));
+const sgn = (x, d = 1) => (x == null || !isFinite(x) ? "-" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d));
+
+// ---------------------------------------------------------------- theme
+(function () {
+  let t = null;
+  try { t = localStorage.getItem("odds-theme"); } catch (e) {}
+  if (t) document.documentElement.setAttribute("data-theme", t);
+  $("#theme").onclick = () => {
+    const cur = document.documentElement.getAttribute("data-theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const nxt = cur === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nxt);
+    try { localStorage.setItem("odds-theme", nxt); } catch (e) {}
+  };
+})();
+
+// ---------------------------------------------------------------- data access
+function games() {
+  const g = D[st.league] && D[st.league].games;
+  if (!g) return [];
+  const idx = Object.fromEntries(g.cols.map((c, i) => [c, i]));
+  return g.rows.map((r) => { const o = {}; for (const c in idx) o[c] = r[idx[c]]; return o; })
+    .filter((o) => st.season === "all" || String(o.season) === st.season);
+}
+const LL = (ps, ys) => { let s = 0; for (let i = 0; i < ps.length; i++) { const p = Math.min(Math.max(ps[i], 1e-6), 1 - 1e-6); s -= ys[i] ? Math.log(p) : Math.log(1 - p); } return s / ps.length; };
+const BR = (ps, ys) => ps.reduce((a, p, i) => a + (p - ys[i]) ** 2, 0) / ps.length;
+
+// ---------------------------------------------------------------- tooltip
+const tip = $("#tip");
+function showTip(ev, html) { tip.innerHTML = html; tip.style.display = "block"; const x = Math.min(ev.clientX + 14, innerWidth - 270); tip.style.left = x + "px"; tip.style.top = (ev.clientY + 14) + "px"; }
+function hideTip() { tip.style.display = "none"; }
+
+// ---------------------------------------------------------------- tiny SVG chart kit
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function scale(d0, d1, r0, r1) { return (v) => r0 + ((v - d0) / (d1 - d0 || 1)) * (r1 - r0); }
+function niceTicks(lo, hi, n = 5) { const span = hi - lo || 1; const step0 = span / n; const mag = 10 ** Math.floor(Math.log10(step0)); const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= step0); const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(10)); return out; }
+function frame(host, W, H, m) { host.innerHTML = ""; const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" }, host); return { svg, x0: m.l, x1: W - m.r, y0: H - m.b, y1: m.t }; }
+function axes(f, xs, ys, xt, yt, xfmt, yfmt) {
+  const g = el("g", {}, f.svg);
+  yt.forEach((v) => { const y = ys(v); el("line", { x1: f.x0, x2: f.x1, y1: y, y2: y, stroke: "var(--grid)", "stroke-width": 1 }, g); const t = el("text", { x: f.x0 - 6, y: y + 3.5, "text-anchor": "end" }, g); t.textContent = yfmt(v); });
+  el("line", { x1: f.x0, x2: f.x1, y1: f.y0, y2: f.y0, stroke: "var(--base)", "stroke-width": 1 }, g);
+  xt.forEach((v) => { const t = el("text", { x: xs(v), y: f.y0 + 16, "text-anchor": "middle" }, g); t.textContent = xfmt(v); });
+}
+function legend(host, items) { $(host).innerHTML = items.map(([n, c]) => `<span><i style="background:${c}"></i>${n}</span>`).join(""); }
+function table(host, head, rows) { $(host).innerHTML = `<table><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((v) => `<td>${v}</td>`).join("")}</tr>`).join("")}</tbody></table>`; }
+
+function lineChart(host, series, opt) {
+  const W = 560, H = 300, m = { l: 48, r: 14, t: 10, b: 30 };
+  const f = frame(host, W, H, m);
+  const all = series.flatMap((s) => s.pts);
+  if (!all.length) { host.innerHTML = '<p class="note">No data for this selection.</p>'; return; }
+  const xd = opt.xd || [Math.min(...all.map((p) => p[0])), Math.max(...all.map((p) => p[0]))];
+  let yd = opt.yd || [Math.min(...all.map((p) => p[1])), Math.max(...all.map((p) => p[1]))];
+  if (!opt.yd) { const pad = (yd[1] - yd[0]) * 0.08 || 0.01; yd = [yd[0] - pad, yd[1] + pad]; }
+  const xs = scale(xd[0], xd[1], f.x0, f.x1), ys = scale(yd[0], yd[1], f.y0, f.y1);
+  axes(f, xs, ys, opt.xticks || niceTicks(xd[0], xd[1], 5), niceTicks(yd[0], yd[1], 5), opt.xfmt || String, opt.yfmt || ((v) => v.toFixed(2)));
+  if (opt.diag) el("line", { x1: xs(0), y1: ys(0), x2: xs(1), y2: ys(1), stroke: "var(--base)", "stroke-width": 1 }, f.svg);
+  if (opt.hline != null) el("line", { x1: f.x0, x2: f.x1, y1: ys(opt.hline), y2: ys(opt.hline), stroke: "var(--base)", "stroke-width": 1 }, f.svg);
+  series.forEach((s) => {
+    if (s.pts.length > 1) el("path", { d: s.pts.map((p, i) => (i ? "L" : "M") + xs(p[0]).toFixed(1) + "," + ys(p[1]).toFixed(1)).join(""), fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, f.svg);
+    if (s.dots !== false) s.pts.forEach((p) => {
+      const c = el("circle", { cx: xs(p[0]), cy: ys(p[1]), r: 4, fill: s.color, stroke: "var(--surface)", "stroke-width": 2 }, f.svg);
+      const hit = el("circle", { cx: xs(p[0]), cy: ys(p[1]), r: 12, fill: "transparent" }, f.svg);
+      hit.addEventListener("mousemove", (ev) => showTip(ev, `<b>${s.name}</b><br>${p[2] || ""}`));
+      hit.addEventListener("mouseleave", hideTip);
+    });
+  });
+  if (opt.crosshair) {
+    const ov = el("rect", { x: f.x0, y: f.y1, width: f.x1 - f.x0, height: f.y0 - f.y1, fill: "transparent" }, f.svg);
+    const vl = el("line", { y1: f.y1, y2: f.y0, stroke: "var(--base)", "stroke-width": 1, visibility: "hidden" }, f.svg);
+    ov.addEventListener("mousemove", (ev) => {
+      const r = f.svg.getBoundingClientRect(); const px = (ev.clientX - r.left) * (W / r.width);
+      const xv = xd[0] + ((px - f.x0) / (f.x1 - f.x0)) * (xd[1] - xd[0]);
+      const lines = series.map((s) => { let best = s.pts[0]; s.pts.forEach((p) => { if (Math.abs(p[0] - xv) < Math.abs(best[0] - xv)) best = p; }); return [s, best]; });
+      vl.setAttribute("x1", xs(lines[0][1][0])); vl.setAttribute("x2", xs(lines[0][1][0])); vl.setAttribute("visibility", "visible");
+      showTip(ev, (opt.xfmtTip || opt.xfmt || String)(lines[0][1][0]) + "<br>" + lines.map(([s, p]) => `${s.name}: <b>${(opt.yfmtTip || opt.yfmt || String)(p[1])}</b>`).join("<br>"));
+    });
+    ov.addEventListener("mouseleave", () => { vl.setAttribute("visibility", "hidden"); hideTip(); });
+  }
+}
+
+function histChart(host, values, opt) {
+  const W = 560, H = 260, m = { l: 44, r: 14, t: 10, b: 30 };
+  const f = frame(host, W, H, m);
+  if (!values.length) { host.innerHTML = '<p class="note">No data for this selection.</p>'; return []; }
+  const [lo, hi, w] = opt.range;
+  const n = Math.round((hi - lo) / w);
+  const bins = Array.from({ length: n }, (_, i) => ({ x0: lo + i * w, x1: lo + (i + 1) * w, c: 0 }));
+  values.forEach((v) => { let i = Math.floor((v - lo) / w); i = Math.max(0, Math.min(n - 1, i)); bins[i].c++; });
+  const ymax = Math.max(...bins.map((b) => b.c));
+  const xs = scale(lo, hi, f.x0, f.x1), ys = scale(0, ymax * 1.08, f.y0, f.y1);
+  axes(f, xs, ys, niceTicks(lo, hi, 6), niceTicks(0, ymax * 1.08, 4), opt.xfmt || String, (v) => v.toFixed(0));
+  bins.forEach((b) => {
+    if (!b.c) return;
+    const x = xs(b.x0) + 1, bw = Math.max(xs(b.x1) - xs(b.x0) - 2, 1), y = ys(b.c), h = f.y0 - y, r = Math.min(4, bw / 2, h);
+    el("path", { d: `M${x},${f.y0} L${x},${y + r} Q${x},${y} ${x + r},${y} L${x + bw - r},${y} Q${x + bw},${y} ${x + bw},${y + r} L${x + bw},${f.y0} Z`, fill: opt.color || "var(--s1)" }, f.svg);
+    const hit = el("rect", { x: xs(b.x0), y: f.y1, width: xs(b.x1) - xs(b.x0), height: f.y0 - f.y1, fill: "transparent" }, f.svg);
+    hit.addEventListener("mousemove", (ev) => showTip(ev, `${opt.xfmt(b.x0)} to ${opt.xfmt(b.x1)}<br><b>${b.c}</b> ${opt.unit || "games"}`));
+    hit.addEventListener("mouseleave", hideTip);
+  });
+  (opt.vlines || []).forEach(([v, color, label]) => {
+    el("line", { x1: xs(v), x2: xs(v), y1: f.y1, y2: f.y0, stroke: color, "stroke-width": 1.5 }, f.svg);
+    if (label) { const t = el("text", { x: xs(v) + 4, y: f.y1 + 10 }, f.svg); t.textContent = label; }
+  });
+  return bins;
+}
+
+// ---------------------------------------------------------------- render
+function render() {
+  const L = D[st.league];
+  if (!L) { $("#tiles").innerHTML = '<p class="note">No data for this league.</p>'; return; }
+  const rows = games();
+  const mk = st.market, md = st.model;
+  const mkName = MARKETS[st.league].find((x) => x[0] === mk)[1], mdName = MODELS[st.league].find((x) => x[0] === md)[1];
+  const both = rows.filter((r) => r[mk] != null && r[md] != null && r.y != null);
+  const pm = both.map((r) => r[md]), pk = both.map((r) => r[mk]), ys = both.map((r) => r.y);
+  const llm = both.length ? LL(pm, ys) : null, llk = both.length ? LL(pk, ys) : null;
+  const big = both.filter((r) => Math.abs(r[md] - r[mk]) > 0.05);
+  const llbm = big.length ? LL(big.map((r) => r[md]), big.map((r) => r.y)) : null, llbk = big.length ? LL(big.map((r) => r[mk]), big.map((r) => r.y)) : null;
+  const strat = st.league === "nba" ? (L.backtests || {})["kalshi|t6h|p_ensemble_early"] : (L.backtests || {})["book|close|p_ensemble"];
+  const tiles = [
+    ["Games with both prices", both.length.toLocaleString(), st.season === "all" ? "all seasons in view" : "season " + st.season],
+    [mkName + " log loss", fmt(llk), "Brier " + (both.length ? fmt(BR(pk, ys)) : "-")],
+    [mdName + " log loss", fmt(llm), "Brier " + (both.length ? fmt(BR(pm, ys)) : "-")],
+    ["Model minus market log loss", llm == null ? "-" : sgn(llm - llk, 4), llm > llk ? "positive: market more accurate" : "negative: model more accurate"],
+    ["Disagreements over 5 points", both.length ? fmtP(big.length / both.length, 0) : "-", big.length ? `model ${fmt(llbm)} vs market ${fmt(llbk)} on them` : ""],
+    ["Strategy ROI (pre-registered)", strat && strat.roi != null ? sgn(100 * strat.roi, 1) + "%" : "-", strat && strat.roi_ci ? `95% CI ${sgn(100 * strat.roi_ci[0], 1)} to ${sgn(100 * strat.roi_ci[1], 1)}%, ${strat.n_bets} bets` : "no bets"],
+  ];
+  $("#tiles").innerHTML = tiles.map(([l, v, d]) => `<div class="tile"><div class="label">${l}</div><div class="value">${v}</div><div class="delta">${d}</div></div>`).join("");
+
+  // calibration
+  const cal = (key) => { const out = []; for (let b = 0; b < 10; b++) { const s = both.filter((r) => Math.min(9, Math.floor(r[key] * 10)) === b); if (s.length >= 15) out.push([s.reduce((a, r) => a + r[key], 0) / s.length, s.reduce((a, r) => a + r.y, 0) / s.length, s.length]); } return out; };
+  const cm = cal(md), ck = cal(mk);
+  const tipc = (p) => [p[0], p[1], `forecast ${fmtP(p[0])}<br>observed ${fmtP(p[1])}<br>${p[2]} games`];
+  lineChart($("#cal"), [{ name: mdName, color: "var(--s1)", pts: cm.map(tipc) }, { name: mkName, color: "var(--s2)", pts: ck.map(tipc) }],
+    { xd: [0, 1], yd: [0, 1], diag: true, xticks: [0, 0.2, 0.4, 0.6, 0.8, 1], xfmt: (v) => (100 * v).toFixed(0) + "%", yfmt: (v) => (100 * v).toFixed(0) + "%" });
+  legend("#cal-leg", [[mdName, "var(--s1)"], [mkName, "var(--s2)"]]);
+  table("#cal-t", ["Series", "Mean forecast", "Observed", "Games"], [...cm.map((p) => [mdName, fmtP(p[0]), fmtP(p[1]), p[2]]), ...ck.map((p) => [mkName, fmtP(p[0]), fmtP(p[1]), p[2]])]);
+
+  // disagreement histogram
+  const diffs = both.map((r) => 100 * (r[md] - r[mk]));
+  const bins = histChart($("#diff"), diffs, { range: [-15, 15, 1], xfmt: (v) => sgn(v, 0), vlines: [[0, "var(--base)", ""]] });
+  table("#diff-t", ["From (pp)", "To (pp)", "Games"], bins.filter((b) => b.c).map((b) => [sgn(b.x0, 0), sgn(b.x1, 0), b.c]));
+
+  // season log loss
+  const sea = L.season_ll || [];
+  const names = ["Elo (538 params)", "Bayesian state-space", "Ensemble"], cols = ["var(--s1)", "var(--s2)", "var(--s3)"];
+  lineChart($("#sea"), names.map((n, i) => ({ name: n, color: cols[i], pts: sea.filter((r) => r[n] != null).map((r) => [r.season, r[n], `${r.season}: ${fmt(r[n])}`]) })),
+    { xfmt: (v) => String(v), crosshair: true, yfmt: (v) => v.toFixed(3) });
+  legend("#sea-leg", names.map((n, i) => [n, cols[i]]));
+  table("#sea-t", ["Season", ...names], sea.map((r) => [r.season, ...names.map((n) => fmt(r[n]))]));
+
+  // bankroll
+  const P = L.paths || {};
+  const pk_ = Object.keys(P);
+  const label = { "kalshi|t6h|p_ensemble_early": "Ensemble alone, Kalshi T-6h", "kalshi|t6h|elo538_p_home": "Elo (538) alone, Kalshi T-6h", "kalshi|t6h|p_combined_early": "Model + market combination, Kalshi T-6h", "polymarket|t6h|p_ensemble_early": "Ensemble, Polymarket T-6h", "book|close|p_ensemble": "Ensemble, sportsbook close" };
+  $("#bank-note").textContent = st.league === "nba" ? "Start 10,000; fees and executable asks; all seasons (the season filter does not apply)." : "Start 10,000; vigged closing moneylines 2013 onward (CLV is zero by construction at the close).";
+  lineChart($("#bank"), pk_.map((k, i) => ({ name: label[k] || k, color: cols[i], dots: false, pts: P[k].date.map((d, j) => [Date.parse(d), P[k].bankroll[j]]) })),
+    { xfmt: (v) => new Date(v).toISOString().slice(0, 7), xfmtTip: (v) => new Date(v).toISOString().slice(0, 10), yfmt: (v) => Math.round(v).toLocaleString(), crosshair: true, hline: 10000 });
+  legend("#bank-leg", pk_.map((k, i) => [label[k] || k, cols[i]]));
+  table("#bank-t", ["Strategy", "Last date", "Bankroll"], pk_.map((k) => [label[k] || k, P[k].date.at(-1), Math.round(P[k].bankroll.at(-1)).toLocaleString()]));
+
+  // CLV
+  const clvRows = rows.filter((r) => r.clv != null);
+  $("#clv-card").style.display = st.league === "nba" ? "" : "none";
+  if (st.league === "nba") {
+    const v = clvRows.map((r) => 100 * r.clv); const mean = v.length ? v.reduce((a, b) => a + b, 0) / v.length : 0;
+    const b2 = histChart($("#clv"), v, { range: [-12, 12, 1], xfmt: (x) => sgn(x, 0), unit: "bets", color: "var(--s1)", vlines: [[0, "var(--base)", ""], [mean, "var(--s2)", "mean " + sgn(mean, 2)]] });
+    table("#clv-t", ["From (pp)", "To (pp)", "Bets"], b2.filter((b) => b.c).map((b) => [sgn(b.x0, 0), sgn(b.x1, 0), b.c]));
+  }
+
+  // risk table
+  const bt = L.backtests || {};
+  const rk = Object.keys(bt);
+  table("#risk", ["Strategy", "Bets", "ROI", "95% CI", "Avg CLV", "Max DD", "Sharpe/day"], rk.map((k) => {
+    const s = bt[k]; return [k.replaceAll("|", " · ").replace("p_", ""), s.n_bets ?? 0, s.roi != null ? sgn(100 * s.roi, 1) + "%" : "-",
+      s.roi_ci ? `${sgn(100 * s.roi_ci[0], 1)} / ${sgn(100 * s.roi_ci[1], 1)}` : "-", s.avg_clv != null ? sgn(100 * s.avg_clv, 2) + " pp" : "-",
+      s.max_drawdown != null ? sgn(100 * s.max_drawdown, 1) + "%" : "-", s.daily_sharpe != null ? sgn(s.daily_sharpe, 2) : "-"];
+  }));
+
+  // upcoming
+  const up = L.upcoming;
+  $("#up-title").style.display = up && up.rows.length ? "" : "none";
+  $("#upcoming").style.display = up && up.rows.length ? "" : "none";
+  if (up && up.rows.length) {
+    const ix = Object.fromEntries(up.cols.map((c, i) => [c, i]));
+    table("#upcoming", ["Date", "Matchup", "Ensemble P(home)", "Bayes P(home)", "Elo P(home)"], up.rows.map((r) => [r[ix.date], `${r[ix.away]} @ ${r[ix.home]}`, fmtP(r[ix.ens]), fmtP(r[ix.bayes]), fmtP(r[ix.elo])]));
+  }
+  renderGames(rows);
+}
+
+let sortKey = "date", sortDir = -1;
+function renderGames(rows) {
+  const q = $("#q").value.trim().toUpperCase();
+  const mk = st.market, md = st.model;
+  let r = rows.filter((x) => !q || x.home === q || x.away === q || `${x.away}@${x.home}`.includes(q));
+  const val = (x, k) => (k === "diff" ? (x[md] != null && x[mk] != null ? x[md] - x[mk] : null) : x[k]);
+  r.sort((a, b) => { const va = val(a, sortKey), vb = val(b, sortKey); if (va == null) return 1; if (vb == null) return -1; return (va > vb ? 1 : va < vb ? -1 : 0) * sortDir; });
+  $("#count").textContent = `${r.length.toLocaleString()} games`;
+  const head = [["date", "Date"], ["home", "Matchup"], [md, "Model"], [mk, "Market"], ["diff", "Diff (pp)"], ["y", "Result"], ["stake", "Bet"], ["clv", "CLV (pp)"]];
+  const body = r.slice(0, 400).map((x) => {
+    const d = val(x, "diff");
+    const res = x.hp != null ? `${x.away} ${x.ap}-${x.hp} ${x.home}` : "-";
+    const bet = x.stake ? `${x.side} ${Math.round(x.stake)}` : "";
+    return `<tr><td>${x.date}</td><td>${x.away} @ ${x.home}</td><td>${fmtP(x[md])}</td><td>${fmtP(x[mk])}</td><td>${d == null ? "-" : sgn(100 * d, 1)}</td><td>${res}</td><td>${bet}</td><td>${x.clv == null ? "" : sgn(100 * x.clv, 1)}</td></tr>`;
+  }).join("");
+  $("#games").innerHTML = `<table><thead><tr>${head.map(([k, h]) => `<th data-k="${k}">${h}${sortKey === k ? (sortDir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table>` + (r.length > 400 ? `<p class="note" style="padding:8px">Showing 400 of ${r.length}; filter by team to narrow.</p>` : "");
+  document.querySelectorAll("#games th").forEach((th) => th.onclick = () => { const k = th.dataset.k; if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = -1; } renderGames(games()); });
+}
+
+function setupFilters() {
+  const L = D[st.league];
+  const seasons = L ? [...new Set(L.games.rows.map((r) => r[L.games.cols.indexOf("season")]))].sort() : [];
+  $("#season").innerHTML = `<option value="all">All</option>` + seasons.map((s) => `<option>${s}</option>`).join("");
+  $("#season").value = "all"; st.season = "all";
+  $("#market").innerHTML = MARKETS[st.league].map(([k, n]) => `<option value="${k}">${n}</option>`).join("");
+  $("#model").innerHTML = MODELS[st.league].map(([k, n]) => `<option value="${k}">${n}</option>`).join("");
+  st.market = MARKETS[st.league][0][0]; st.model = MODELS[st.league][0][0];
+}
+document.querySelectorAll("#league button").forEach((b) => b.onclick = () => {
+  document.querySelectorAll("#league button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  st.league = b.dataset.v; setupFilters(); render();
+});
+$("#season").onchange = (e) => { st.season = e.target.value; render(); };
+$("#market").onchange = (e) => { st.market = e.target.value; render(); };
+$("#model").onchange = (e) => { st.model = e.target.value; render(); };
+$("#q").oninput = () => renderGames(games());
+$("#asof").textContent = "Built " + D.built_utc + ". Model rows are out-of-sample; markets are margin-free.";
+if (!D.nfl) document.querySelector('#league button[data-v="nfl"]').disabled = true;
+setupFilters();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+{
+  "registered": false,
+  "note": "Post-hoc diagnostics written after the replication results were seen.",
+  "registration_timing": {
+    "registration_file_created": "2026-11-14 22:53:02 UTC",
+    "last_props_request_before": "2026-11-14 03:28:40 UTC",
+    "first_props_request_after": "2026-11-14 22:53:37 UTC",
+    "seconds_after_registration": 34.640732
+  },
+  "game_market_settlement": {
+    "nba": {
+      "scalar_settled_events": 3,
+      "matched_to_played_games": 0,
+      "matched_ties": 0,
+      "matched_non_ties": 0,
+      "matched_non_tie_games": []
+    },
+    "nfl": {
+      "scalar_settled_events": 7,
+      "matched_to_played_games": 2,
+      "matched_ties": 2,
+      "matched_non_ties": 0,
+      "matched_non_tie_games": []
+    }
+  },
+  "clustering_replication": [
+    {
+      "b_model": 0.13236646156778345,
+      "se_model": 0.0400790786914524,
+      "z": 3.302632343093581,
+      "p_one_sided": 0.0004789093927595546,
+      "n": 16041,
+      "clustering": "Game (registered)",
+      "clusters": 728
+    },
+    {
+      "b_model": 0.13236646156778345,
+      "se_model": 0.044757325680178664,
+      "z": 2.9574256181799434,
+      "p_one_sided": 0.001551097924476526,
+      "n": 16041,
+      "clustering": "Player",
+      "clusters": 297
+    },
+    {
+      "b_model": 0.13236646156778345,
+      "se_model": 0.038593189309802316,
+      "z": 3.429788103419677,
+      "p_one_sided": 0.0003020263879450158,
+      "n": 16041,
+      "clustering": "Date",
+      "clusters": 141
+    },
+    {
+      "b_model": 0.13236646156778345,
+      "se_model": 0.042615349544397677,
+      "z": 3.106074759046173,
+      "p_one_sided": 0.0009479438868624156,
+      "n": 16041,
+      "clustering": "Game and player (two-way)",
+      "clusters": null
+    },
+    {
+      "b_model": 0.13236646156778345,
+      "se_model": 0.04122098651339878,
+      "z": 3.2111424971539204,
+      "p_one_sided": 0.0006610417933679283,
+      "n": 16041,
+      "clustering": "Date and player (two-way)",
+      "clusters": null
+    }
+  ],
+  "clustering_discovery": [
+    {
+      "b_model": 0.1962793180956549,
+      "se_model": 0.09142139550645166,
+      "z": 2.1469735504289407,
+      "p_one_sided": 0.015897693683516824,
+      "n": 2752,
+      "clustering": "Game (registered)",
+      "clusters": 125
+    },
+    {
+      "b_model": 0.1962793180956549,
+      "se_model": 0.08393906754626593,
+      "z": 2.338354759391016,
+      "p_one_sided": 0.009684426269977023,
+      "n": 2752,
+      "clustering": "Player",
+      "clusters": 222
+    },
+    {
+      "b_model": 0.1962793180956549,
+      "se_model": 0.10045990388551801,
+      "z": 1.95380754414548,
+      "p_one_sided": 0.0253619908803922,
+      "n": 2752,
+      "clustering": "Date",
+      "clusters": 86
+    },
+    {
+      "b_model": 0.1962793180956549,
+      "se_model": 0.0805322391586714,
+      "z": 2.437276302586457,
+      "p_one_sided": 0.007399183568637428,
+      "n": 2752,
+      "clustering": "Game and player (two-way)",
+      "clusters": null
+    },
+    {
+      "b_model": 0.1962793180956549,
+      "se_model": 0.09066290463166242,
+      "z": 2.164935249902724,
+      "p_one_sided": 0.015196322129412035,
+      "n": 2752,
+      "clustering": "Date and player (two-way)",
+      "clusters": null
+    }
+  ],
+  "information_source": [
+    {
+      "subset": "No injury designation (P(play) = 1)",
+      "n": 15975,
+      "games": 727,
+      "players": 297,
+      "b_model": 0.016600535038392237,
+      "se_game": 0.046217400139157726,
+      "p_one_sided_game": 0.3597288489730175,
+      "se_two_way": 0.04509134270120717,
+      "p_one_sided_two_way": 0.3563793952592915,
+      "log_loss_market": 0.5421147396871044,
+      "log_loss_model": 0.5654952510554744
+    },
+    {
+      "subset": "Injury designation (P(play) < 1)",
+      "n": 66,
+      "games": 33,
+      "players": 30,
+      "b_model": 47.01747911115125,
+      "se_game": NaN,
+      "p_one_sided_game": NaN,
+      "se_two_way": NaN,
+      "p_one_sided_two_way": NaN,
+      "log_loss_market": 0.5702277559553116,
+      "log_loss_model": 0.06048042983817812
+    }
+  ],
+  "trading_rules": {
+    "h3_share_yes": 0.9586070959264126,
+    "h3_mean_predicted_edge": 0.03484467204259503,
+    "h3_hit_rate": 0.3291721419185282,
+    "h3b_share_yes": 0.49394495412844036,
+    "frozen_b_const": 0.12687395826852374,
+    "replication_b_const": 0.07080184414177687,
+    "frozen_b_model": 0.1962793180956549,
+    "replication_b_model": 0.13236646156778345,
+    "yes_premium_vs_mid_discovery": 0.025072674418604647,
+    "yes_premium_vs_mid_replication": 0.013307462128296239,
+    "half_spread_discovery": 0.021813226744186048,
+    "half_spread_replication": 0.021977744529642792
+  },
+  "settled_replication": {
+    "n": 16041,
+    "n_scalar": 76,
+    "n_scalar_dnp": 74,
+    "n_dnp_not_scalar": 0,
+    "n_scalar_listed_out": 52,
+    "box_score_vs_settlement_agreement_binary": 1.0,
+    "scalar_settlement_value_mean": 0.425657894736842,
+    "scalar_mid_mean": 0.38552631578947366,
+    "scalar_spread_mean": 0.2044736842105263,
+    "scalar_expiration_values": {
+      "": 53,
+      "Confirmed DNP": 23
+    },
+    "encompassing_binary_settled": {
+      "registered_model": {
+        "b_model": 0.022425917224515615,
+        "se_game": 0.04654369563306209,
+        "p_one_sided_game": 0.3149651259107065,
+        "se_two_way": 0.04503682783297858,
+        "p_one_sided_two_way": 0.3092609818038466,
+        "n": 15965,
+        "games": 727
+      },
+      "model_given_play": {
+        "b_model": 0.01819516353634174,
+        "se_game": 0.046547648180516196,
+        "p_one_sided_game": 0.34793805542267364,
+        "se_two_way": 0.04509313619774119,
+        "p_one_sided_two_way": 0.343289539813291,
+        "n": 15965,
+        "games": 727
+      }
+    },
+    "log_loss_binary_settled": {
+      "market": 0.5421607137361947,
+      "model": 0.5653175096057396,
+      "frozen_combination": 0.5421909107674813
+    },
+    "paired_combined_minus_market_binary_settled": {
+      "mean_diff": 3.01970312865487e-05,
+      "ci_lo": -0.0015953852475480345,
+      "ci_hi": 0.0016535194071580798,
+      "z": 0.037584923632159865,
+      "p_value": 0.970018628627613,
+      "n": 15965,
+      "clusters": 727
+    },
+    "yes_at_ask_settled": {
+      "roi": -0.0432575135059531,
+      "roi_ci": [
+        -0.06446099532277566,
+        -0.022375353918436272
+      ],
+      "mean_gap_vs_mid": 0.015261829063025995
+    },
+    "h3_combined_settled": {
+      "n_bets": 1522,
+      "share_yes": 0.9586070959264126,
+      "mean_pred_edge": 0.03484467204259503,
+      "roi": -0.13245853110713754,
+      "roi_ci": [
+        -0.1959651708042481,
+        -0.06381585467172951
+      ],
+      "n_scalar_bets": 34
+    },
+    "h3b_model_settled": {
+      "n_bets": 8175,
+      "share_yes": 0.49394495412844036,
+      "mean_pred_edge": 0.08442576186532179,
+      "roi": -0.08050113105390869,
+      "roi_ci": [
+        -0.10694124580810842,
+        -0.05121854932872712
+      ],
+      "n_scalar_bets": 60
+    },
+    "box_score": {
+      "encompassing": {
+        "b_const": 0.07080184414177687,
+        "b_market": 0.8391346924289743,
+        "b_model": 0.13236646156778345,
+        "se_const": 0.026561550300202446,
+        "se_market": 0.03880131953046253,
+        "se_model": 0.0400790786914524,
+        "p_const": 0.007685644452241101,
+        "p_market": 1.0129002984420157e-103,
+        "p_model": 0.0009578187855191092,
+        "p_model_one_sided": 0.0004789093927595546
+      },
+      "yes_at_ask": {
+        "roi": -0.047642358864975434,
+        "roi_ci": [
+          -0.06909382230821962,
+          -0.02699293037376528
+        ],
+        "mean_gap_vs_mid": 0.013307462128296239
+      },
+      "h3_combined": {
+        "n_bets": 1522,
+        "share_yes": 0.9586070959264126,
+        "mean_pred_edge": 0.03484467204259503,
+        "roi": -0.10549850603967055,
+        "roi_ci": [
+          -0.17023229029870485,
+          -0.034938387373726704
+        ],
+        "n_scalar_bets": 34
+      },
+      "h3b_model": {
+        "n_bets": 8175,
+        "share_yes": 0.49394495412844036,
+        "mean_pred_edge": 0.08442576186532179,
+        "roi": -0.07359029337101725,
+        "roi_ci": [
+          -0.09990144828165431,
+          -0.044881980862634875
+        ],
+        "n_scalar_bets": 60
+      },
+      "paired_combined_minus_market": {
+        "mean_diff": -0.0008980279521039126,
+        "ci_lo": -0.0025741219784849944,
+        "ci_hi": 0.0006719902138487904,
+        "z": -1.0767232258410737,
+        "p_value": 0.2816039330109329,
+        "n": 16041,
+        "clusters": 728
+      }
+    },
+    "reproduces_registered_numbers": true
+  },
+  "settled_discovery": {
+    "n": 2752,
+    "n_scalar": 16,
+    "n_scalar_dnp": 16,
+    "n_dnp_not_scalar": 0,
+    "n_scalar_listed_out": 9,
+    "box_score_vs_settlement_agreement_binary": 1.0,
+    "scalar_settlement_value_mean": 0.513125,
+    "scalar_mid_mean": 0.37968749999999996,
+    "scalar_spread_mean": 0.151875,
+    "scalar_expiration_values": {
+      "": 12,
+      "Confirmed DNP": 4
+    },
+    "encompassing_binary_settled": {
+      "registered_model": {
+        "b_model": 0.11173888212568314,
+        "se_game": 0.12299513354927154,
+        "p_one_sided_game": 0.1818117728372619,
+        "se_two_way": 0.1127882372362421,
+        "p_one_sided_two_way": 0.16091696472546346,
+        "n": 2736,
+        "games": 125
+      },
+      "model_given_play": {
+        "b_model": 0.11489578449340124,
+        "se_game": 0.12294841710685253,
+        "p_one_sided_game": 0.1750219932780699,
+        "se_two_way": 0.11273126273190626,
+        "p_one_sided_two_way": 0.15405384172281106,
+        "n": 2736,
+        "games": 125
+      }
+    },
+    "log_loss_binary_settled": {
+      "market": 0.5508541389035978,
+      "model": 0.5680305494189763,
+      "frozen_combination": 0.5482999877818496
+    },
+    "paired_combined_minus_market_binary_settled": {
+      "mean_diff": -0.002554151121748269,
+      "ci_lo": -0.007192611051892653,
+      "ci_hi": 0.0016269319923080097,
+      "z": -1.129100052350063,
+      "p_value": 0.2588556292465606,
+      "n": 2736,
+      "clusters": 125
+    },
+    "yes_at_ask_settled": {
+      "roi": -0.0143580403656659,
+      "roi_ci": [
+        -0.06216443548200441,
+        0.03613719234315373
+      ],
+      "mean_gap_vs_mid": 0.028055959302325573
+    },
+    "h3_combined_settled": {
+      "n_bets": 312,
+      "share_yes": 0.9743589743589743,
+      "mean_pred_edge": 0.0345892579563576,
+      "roi": -0.06202354744359561,
+      "roi_ci": [
+        -0.21144540027375347,
+        0.09992389187536195
+      ],
+      "n_scalar_bets": 10
+    },
+    "h3b_model_settled": {
+      "n_bets": 1436,
+      "share_yes": 0.5452646239554317,
+      "mean_pred_edge": 0.08426204534092388,
+      "roi": -0.1013007934817969,
+      "roi_ci": [
+        -0.1748341347264171,
+        -0.03407298468922942
+      ],
+      "n_scalar_bets": 15
+    },
+    "box_score": {
+      "encompassing": {
+        "b_const": 0.12687395826852374,
+        "b_market": 0.7768757141846799,
+        "b_model": 0.1962793180956549,
+        "se_const": 0.06195757652644867,
+        "se_market": 0.09610281277817204,
+        "se_model": 0.09142139550645166,
+        "p_const": 0.04058397822315901,
+        "p_market": 6.278034862578725e-16,
+        "p_model": 0.03179538736703365,
+        "p_model_one_sided": 0.015897693683516824
+      },
+      "yes_at_ask": {
+        "roi": -0.021050112452894655,
+        "roi_ci": [
+          -0.06898793666591031,
+          0.030184977468087373
+        ],
+        "mean_gap_vs_mid": 0.025072674418604647
+      },
+      "h3_combined": {
+        "n_bets": 312,
+        "share_yes": 0.9743589743589743,
+        "mean_pred_edge": 0.0345892579563576,
+        "roi": -0.05101170210003947,
+        "roi_ci": [
+          -0.21379469877461993,
+          0.11328860391755458
+        ],
+        "n_scalar_bets": 10
+      },
+      "h3b_model": {
+        "n_bets": 1436,
+        "share_yes": 0.5452646239554317,
+        "mean_pred_edge": 0.08426204534092388,
+        "roi": -0.097206530879905,
+        "roi_ci": [
+          -0.17109810368677422,
+          -0.029930887335323595
+        ],
+        "n_scalar_bets": 15
+      },
+      "paired_combined_minus_market": {
+        "mean_diff": -0.003354657154266802,
+        "ci_lo": -0.008124273563045618,
+        "ci_hi": 0.0010757993116028981,
+        "z": -1.4345161935487771,
+        "p_value": 0.15142501130671063,
+        "n": 2752,
+        "clusters": 125
+      }
+    },
+    "reproduces_registered_numbers": true
+  }
+}

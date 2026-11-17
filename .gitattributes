@@ -1,0 +1,8 @@
+# Files whose sha256 is recorded (paper/preregistration_props.md and outputs/nba/registered/MANIFEST.sha256)
+# are stored byte-for-byte: no line-ending conversion on commit or checkout, so the hashes verify on any clone.
+sq/research/nba_lines_registered.py -text
+sq/io/kalshi.py -text
+scripts/fetch.py -text
+sq/features/players.py -text
+sq/eval/metrics.py -text
+outputs/nba/registered/** -text
