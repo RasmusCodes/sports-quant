@@ -180,3 +180,8 @@ ledger, daily, summary = run(bets, Config(kelly_fraction=0.25, min_edge=0.02))
 ```
 
 Data sources, licences and exclusions: `DATA_SOURCES.md`.
+
+## Licence
+
+Code and documents: MIT (`LICENSE`). The data are not part of this repository; each source keeps its own
+terms (`DATA_SOURCES.md`; nflverse data are CC-BY-4.0).
