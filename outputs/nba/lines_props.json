@@ -1,0 +1,118 @@
+{
+  "spreads_totals": {
+    "spread_settlement_agreement": 1.0,
+    "spread": {
+      "n": 215,
+      "cover_rate_home": 0.5302325581395348,
+      "mkt_mean_p": 0.502953488372093,
+      "encompassing": {
+        "b_const": 0.11214056545582236,
+        "b_market": 0.03496818972072452,
+        "b_model": 0.2935577386703241,
+        "se_const": 0.14852640336099193,
+        "se_market": 0.4208168860992519,
+        "se_model": 0.3221879399698525,
+        "p_const": 0.450236334119106,
+        "p_market": 0.9337752257466998,
+        "p_model": 0.362222562870235
+      },
+      "median_abs_line": 6.5
+    },
+    "total_settlement_agreement": 1.0,
+    "total": {
+      "n": 150,
+      "over_rate": 0.48,
+      "mkt_mean_p": 0.5022666666666666,
+      "encompassing": {
+        "b_const": -0.13383982022271215,
+        "b_market": 0.5402844553534083,
+        "b_model": 0.24562111707535414,
+        "se_const": 0.2351173471145772,
+        "se_market": 0.6273987798908875,
+        "se_model": 0.42939767535219886,
+        "p_const": 0.5691885989219844,
+        "p_market": 0.3891554375126206,
+        "p_model": 0.5673130655899954
+      },
+      "model_bias_pts": -1.9976514676623658
+    }
+  },
+  "props": {
+    "available": true,
+    "scoring": "settlement",
+    "markets_collected": 2856,
+    "matched_players_share": 0.9702380952380952,
+    "n_props": 2752,
+    "n_scored": 2736,
+    "n_scalar": 16,
+    "n_scalar_dnp": 16,
+    "n_dnp_not_scalar": 0,
+    "box_score_settlement_agreement": 1.0,
+    "scalar_settlement_value_mean": 0.513125,
+    "games": 125,
+    "games_scored": 125,
+    "players": 222,
+    "seasons": [
+      2026,
+      2027
+    ],
+    "dates": [
+      "2026-01-16",
+      "2026-11-11"
+    ],
+    "dispersion": 3.3946010544120617,
+    "mean_spread": 0.04299342105263158,
+    "yes_rate": 0.43896198830409355,
+    "mean_price": 0.4115222953216374,
+    "calibration_market": {
+      "intercept": 0.13542490293502008,
+      "intercept_se": 0.04638659154837699,
+      "slope": 0.9439348690302494,
+      "slope_se": 0.04080987672401424,
+      "slope_p_vs_1": 0.1694998066195268
+    },
+    "encompassing": {
+      "b_const": 0.13622904883137354,
+      "b_market": 0.8488734348648577,
+      "b_model": 0.11173888212568314,
+      "se_const": 0.06182027883010005,
+      "se_market": 0.12158879466298997,
+      "se_model": 0.12299513354927154,
+      "p_const": 0.02755034404922255,
+      "p_market": 2.920232777357873e-12,
+      "p_model": 0.3636235456745238,
+      "p_model_one_sided": 0.1818117728372619
+    },
+    "paired_model_minus_market": {
+      "mean_diff": 0.017176410515378365,
+      "ci_lo": 0.004755158264165957,
+      "ci_hi": 0.028614202554983478,
+      "z": 2.8081606338142526,
+      "p_value": 0.004982536672214625,
+      "n": 2736,
+      "clusters": 125
+    },
+    "yes_at_ask": {
+      "roi": -0.0143580403656659,
+      "roi_ci": [
+        -0.06216443548200441,
+        0.03613719234315373
+      ],
+      "mean_gap_vs_mid": 0.028055959302325573,
+      "mean_half_spread": 0.021813226744186048
+    },
+    "strategy_model": {
+      "n_bets": 1436,
+      "share_yes": 0.5452646239554317,
+      "mean_pred_edge": 0.08426204534092388,
+      "roi": -0.1013007934817969,
+      "roi_ci": [
+        -0.1748341347264171,
+        -0.03407298468922942
+      ],
+      "hit_rate": 0.36142061281337046,
+      "n_scalar_bets": 15
+    },
+    "dnp_share": 0.005813953488372093
+  }
+}

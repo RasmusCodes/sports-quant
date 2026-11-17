@@ -1,0 +1,58 @@
+{
+  "longrun_n": 14338,
+  "market_kalshi_n": 1556,
+  "market_kalshi_seasons": [
+    2025,
+    2026,
+    2027
+  ],
+  "market_kalshi_dates": [
+    "2025-04-15",
+    "2026-11-11"
+  ],
+  "market_polymarket_n": 1532,
+  "market_polymarket_seasons": [
+    2024,
+    2025,
+    2026,
+    2027
+  ],
+  "market_polymarket_dates": [
+    "2024-04-20",
+    "2026-11-11"
+  ],
+  "market_common_n": 827,
+  "market_common_seasons": [
+    2025,
+    2026,
+    2027
+  ],
+  "market_common_dates": [
+    "2025-04-23",
+    "2026-11-11"
+  ],
+  "kalshi_close_overround_mean": 0.007435732647814887,
+  "kalshi_open_overround_mean": 0.07370629370629371,
+  "flb_kalshi_close": {
+    "slope": 1.0581218441803188,
+    "slope_se": 0.0655558647438133,
+    "intercept": -0.023599365535158262
+  },
+  "flb_poly_close": {
+    "slope": 0.9972601693076895,
+    "slope_se": 0.06608789239652303,
+    "intercept": -0.0635513012692769
+  },
+  "flb_kalshi_open": {
+    "slope": 1.2509795805309,
+    "slope_se": 0.08608677804024531,
+    "intercept": 0.036688096312171015
+  },
+  "venue_gap": {
+    "n": 827,
+    "mean": -7.738814993953916e-05,
+    "mean_abs": 0.004685610640870627,
+    "p90_abs": 0.010000000000000009,
+    "corr": 0.9995456476156673
+  }
+}
